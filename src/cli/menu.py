@@ -1,4 +1,12 @@
-from services.item_service import add_item, get_all_items, update_item_status, mark_item_as_sold, update_item_field
+from services.item_service import add_item, get_all_items, update_item_status, mark_item_as_sold, update_item_field, get_item_by_id, delete_item
+
+def get_input(prompt):
+    value = input(prompt)
+
+    if value == "0":
+        return None
+
+    return value
 
 def show_menu():
     while True:
@@ -7,19 +15,46 @@ def show_menu():
         print("2. View inventory")
         print("3. Update listing status")
         print("4. Edit item")
-        print("5. Exit")
+        print("5. Remove item")
+        print("6. Exit")
 
         choice = input("Select an option: ")
 
         if choice == "1":
-            title = input("Title: ")
-            brand = input("Brand: ")
-            category = input("Category: ")
-            size = input("Size: ")
-            condition = input("Condition: ")
-            colour = input("Colour: ")
-            price = float(input("Price: "))
-            photo_path = input("Photo folder path: ")
+            title = get_input("Title (0 to go back): ")
+            if title is None:
+                continue
+        
+            brand = get_input("Brand (0 to go back): ")
+            if brand is None:
+                continue
+            
+            category = get_input("Category (0 to go back): ")
+            if category is None:
+                continue
+            
+            
+            size = get_input("Size (0 to go back): ")
+            if size is None:
+                continue
+            
+            condition = get_input("Condition (0 to go back): ")
+            if condition is None:
+                continue
+            
+            colour = get_input("Colour (0 to go back): ")
+            if colour is None:
+                continue
+            
+            price = get_input("Price (0 to go back): ")
+            if price is None:
+                continue
+            price = float(price)
+            
+            photo_path = get_input("Photo folder path (0 to go back): ")
+            if photo_path is None:
+                continue
+            
 
             add_item(title, brand, category, size, condition, colour, price, photo_path)
 
@@ -49,7 +84,11 @@ def show_menu():
 
                     
         elif choice == "3":
-            item_id = input("Enter item ID: ")
+
+            item_id = input("Enter item ID (0 to go back): ")
+
+            if item_id == "0":
+                continue
 
             print("\nChoose status:")
             print("0. Back")
@@ -88,10 +127,15 @@ def show_menu():
         
 
         elif choice == "4":
-            item_id = input("Enter item ID to edit: ")
+
+            item_id = input("Enter item ID to edit (0 to go back): ")
+
+            if item_id == "0":
+                continue
 
             while True:
                 print("\nWhat do you want to edit?")
+                print("0. Back")
                 print("1. Title")
                 print("2. Brand")
                 print("3. Category")
@@ -103,6 +147,9 @@ def show_menu():
                 print("9. Status")
 
                 field_choice = input("Select field: ")
+
+                if field_choice == "0":
+                    break
 
                 fields = {
                     "1": "title",
@@ -161,6 +208,31 @@ def show_menu():
                     break
 
         elif choice == "5":
+            item_id = input("Enter item ID to remove (0 to go back): ")
+
+            if item_id == "0":
+                continue
+
+            item = get_item_by_id(item_id)
+
+            if item is None:
+                print("Item not found.")
+                continue
+
+            if item[9] == "sold":
+                print("Sold items cannot be removed. Change the status first if needed.")
+                continue
+
+            confirm = input(f'Are you sure you want to remove "{item[1]}"? (y/n): ').lower()
+
+            if confirm == "y":
+                delete_item(item_id)
+                print("Item removed successfully.")
+            else:
+                print("Remove cancelled.")
+
+
+        elif choice == "6":
             print("Exiting...")
             break
         else:

@@ -77,3 +77,24 @@ def update_item_field(item_id, field_name, new_value):
 
     connection.commit()
     connection.close()
+
+
+def get_item_by_id(item_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM items WHERE id = ?", (item_id,))
+    item = cursor.fetchone()
+
+    connection.close()
+    return item
+
+
+def delete_item(item_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM items WHERE id = ?", (item_id,))
+
+    connection.commit()
+    connection.close()
