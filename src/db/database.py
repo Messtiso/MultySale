@@ -24,7 +24,10 @@ def create_tables():
             colour TEXT,
             price REAL,
             photo_path TEXT,
-            status TEXT DEFAULT 'not listed'
+            status TEXT DEFAULT 'not listed',
+            listed_platforms TEXT,
+            sold_price REAL,
+            sold_platform TEXT
             )
             """)
     
