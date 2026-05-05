@@ -8,6 +8,18 @@ def get_input(prompt):
 
     return value
 
+def get_float_input(prompt):
+    while True:
+        value = input(prompt)
+
+        if value == "0":
+            return None
+
+        try:
+            return float(value)
+        except ValueError:
+            print("Invalid input. Please enter a number.")    
+
 def show_menu():
     while True:
         print("\n=== MultySell ===")
@@ -46,10 +58,9 @@ def show_menu():
             if colour is None:
                 continue
             
-            price = get_input("Price (0 to go back): ")
+            price = get_float_input("Price (0 to go back): ")
             if price is None:
                 continue
-            price = float(price)
             
             photo_path = get_input("Photo folder path (0 to go back): ")
             if photo_path is None:
@@ -66,21 +77,14 @@ def show_menu():
             if len(items) == 0:
                 print("No items were found.")
             else:
-                for item in items:
-                    print(f"\nID: {item[0]}")
-                    print(f"Title: {item[1]}")
-                    print(f"Brand: {item[2]}")
-                    print(f"Category: {item[3]}")
-                    print(f"Size: {item[4]}")
-                    print(f"Condition: {item[5]}")
-                    print(f"Colour: {item[6]}")
-                    print(f"Price: {item[7]}")
-                    print(f"Photo path: {item[8]}")
-                    print(f"Status: {item[9]}")
+                for index, item in enumerate(items, start=1):
+                    print(f"\n#{index} | ID: {item[0]} | {item[1]} | £{item[7]} | {item[9]}")
+
+                    if item[9] == "listed":
+                        print(f"Platforms: {item[10]}")
 
                     if item[9] == "sold":
-                        print(f"Sold price: £{item[10]}")
-                        print(f"Sold platform: {item[11]}")
+                        print(f"Sold for: £{item[11]} on {item[12]}")
 
                     
         elif choice == "3":
@@ -94,7 +98,7 @@ def show_menu():
             print("0. Back")
             print("1. Not listed")
             print("2. Listed")
-            print("4. Sold")
+            print("3. Sold")
 
             status_choice = input("Select status: ")
 
@@ -113,7 +117,9 @@ def show_menu():
                 print('Item set to "Listed".')
 
             elif status_choice == "3":
-                sold_platform = float(input("Sold price: £"))
+                sold_price = get_float_input("Sold price (0 to go back): £")
+                if sold_price is None:
+                    continue
                 sold_platform = input("Platform sold on: ")
 
                 update_item_field(item_id, "status", "sold")
@@ -121,6 +127,7 @@ def show_menu():
                 update_item_field(item_id, "sold_platform", sold_platform)
 
                 print('Item set to "Sold".')
+                print("Reminder: remove this item from any other platforms where it is still listed.")
 
             else:
                 print("Invalid option")
@@ -194,10 +201,15 @@ def show_menu():
                     new_value = statuses[status_choice]
 
                 else:
-                    new_value = input("Enter new Value: ")
 
                     if field_name == "price":
-                        new_value = float(new_value)
+                        new_value = get_float_input("Enter new price (0 to go back): ")
+                        if new_value is None:
+                            continue
+                    else:
+                        new_value = get_input("Enter new value (0 to go back): ")
+                        if new_value is None:
+                            continue
                 
                 update_item_field(item_id, field_name, new_value)
 

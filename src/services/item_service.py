@@ -59,7 +59,7 @@ def mark_item_as_sold(item_id, sold_price, sold_platform):
 
 def update_item_field(item_id, field_name, new_value):
     allowed_fields = [
-        "title", "brand", "category", "size", "condition", "colour", "price", "photo_path", "status", "listed_platforms", "sold_price", "sold_platforms"
+        "title", "brand", "category", "size", "condition", "colour", "price", "photo_path", "status", "listed_platforms", "sold_price", "sold_platform"
     ]
 
     if field_name not in allowed_fields:
