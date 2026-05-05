@@ -32,7 +32,7 @@ This project was built to solve a real-world problem by creating a central syste
 
 ---
 
-## Screenshot (Item Workflow)
+## Screenshot (Item Edit)
 
 ![Item Edit](images/itemEdit.png)
 
